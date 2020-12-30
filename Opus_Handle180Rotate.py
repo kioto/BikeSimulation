@@ -65,11 +65,14 @@ epsilon = sys.float_info.epsilon
 # 回転前の座標を設定
 B = np.array([-2, -2, 1])
 
+
 # ##################################################################
 # サブ関数の定義
 # ##################################################################
-# 回転中心ベクトル算出関数
 def calcRotCentVector(param1, param2):
+    """回転中心ベクトル算出関数
+    """
+
     # 回転中心ベクトルの算出
     n = [param1[0] - param2[0], param1[1] - param2[1], param1[2] - param2[2]]
     print("n = ", n)
@@ -85,17 +88,22 @@ def calcRotCentVector(param1, param2):
     # 回転中心基底ベクトルの出力
     return input_n
 
-# 点の描画処理（点，色）指定
+
 def plotDot(PrBB, PrColor):
+    """点の描画処理（点，色）指定
+    """
 
     for x, y, z in [PrBB]:
         ax.scatter(x, y, z, color=PrColor, marker='s')
 
-# 矢印の描画
+
 def arrow(v, sp, c):
-    # 関数名(始点位置，ベクトル，色)
-    # 始点位置を基準としてでベクトルで示した方向にプロットする
-    # v:始点位置、sp:ベクトル、c:色
+    """矢印の描画
+
+    関数名(始点位置，ベクトル，色)
+    始点位置を基準としてでベクトルで示した方向にプロットする
+    v:始点位置、sp:ベクトル、c:色
+    """
     # ax.quiver(v[0]+sp[0], v[1]+sp[1], v[2]+sp[2],
     #          v[0], v[1], v[2],
     #          length=np.linalg.norm(v),
@@ -107,8 +115,10 @@ def arrow(v, sp, c):
               color=c, linewidth=3)
     # print("ベクトル sp の大きさ", np.linalg.norm(sp))
 
-# 車輪の描画
+
 def plotWheel(data):
+    """車輪の描画
+    """
     for angle in range(0, 360):
         # 現在描写されているグラフを消去．
         # 使用してもアニメーション描画できなかったので削除した
@@ -117,9 +127,12 @@ def plotWheel(data):
         for x, y, z in wheelData:
             ax.scatter(x, y, z, color='r', marker='s')
 
-# 右手座標系の回転処理関数（回転角，回転中心ベクトル）
-# 回転角はdegree（0〜360°）を入力する．
+
 def rtnArb_Rot(Promega, n):
+    """右手座標系の回転処理関数（回転角，回転中心ベクトル）
+
+    回転角はdegree（0〜360°）を入力する．
+    """
     n_x = n[0]
     n_y = n[1]
     n_z = n[2]
@@ -137,8 +150,14 @@ def rtnArb_Rot(Promega, n):
     return Rot_Rod
 
 
-# 愛点行列算出関数
 def rotM(p):
+    """ 愛点行列算出関数
+
+    例
+    p = np.array([np.pi, np.pi/2, np.pi/3])
+    R = rotM(p)
+    A = R.T
+    """
     # 回転行列を計算する
     px = p[0]
     py = p[1]
@@ -158,10 +177,6 @@ def rotM(p):
 
     return R
 
-# 例
-# p = np.array([np.pi, np.pi/2, np.pi/3])
-# R = rotM(p)
-# A = R.T
 
 # ##################################################################
 # 設定値の内部パラメータへの変換
@@ -391,15 +406,19 @@ art3d.pathpatch_2d_to_3d(q, z=0, zdir="y")
 # 色は自動的に指定される．
 ax.scatter(xfG, yfG, zfG, s=40, alpha=0.3, marker=".")
 
-# 描画データ属性の設定
+
 def update(ifrm, xa, ya, za, xb, yb, zb):
+    """描画データ属性の設定
+    """
     sct.set_data(xa[ifrm], ya[ifrm])
     sct.set_3d_properties(za[ifrm])
     sct.set_data(xb[ifrm], yb[ifrm])
     sct.set_3d_properties(zb[ifrm])
 
-# 更新する内容
+
 def _update_plot(i, fig, im, xa, ya, za):
+    """更新する内容
+    """
     # 前回のフレーム内容を一旦削除
     if len(im) > 0:
         im[0].remove()
@@ -417,6 +436,7 @@ def _update_plot(i, fig, im, xa, ya, za):
     print('*')
     # im.append(ax.scatter(xa[i], ya[i], za[i],
     #                      s=20, alpha=0.3, color='c', marker='o'))
+
 
 # ##################################################################
 # 描画データファイルの保存，描画処理
