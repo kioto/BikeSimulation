@@ -22,8 +22,8 @@ DELTAOMEGA = 0.1
 ELEMENTS = 1000
 
 # 描画関係パラメータ
-NFR = 900 # Number of frames 動画の再現枚数（1回のシミュレーションで描画する枚数）
-FPS = 500 # Frame per sec
+NFR = 900  # Number of frames 動画の再現枚数（1回のシミュレーションで描画する枚数）
+FPS = 500  # Frame per sec
 
 # キャスター角 := THETA
 THETA = 70
@@ -85,20 +85,20 @@ def calcRotCentVector(param1, param2):
 def plotDot(PrBB, PrColor):
 
     for x, y, z in [PrBB]:
-        ax.scatter(x, y, z, color = PrColor, marker = 's')
+        ax.scatter(x, y, z, color=PrColor, marker='s')
 
 # 矢印の描画
 def arrow(v, sp, c):
     # 関数名(始点位置，ベクトル，色)
     # 始点位置を基準としてでベクトルで示した方向にプロットする
     # v:始点位置、sp:ベクトル、c:色
-    #ax.quiver(v[0]+sp[0], v[1]+sp[1], v[2]+sp[2],
+    # ax.quiver(v[0]+sp[0], v[1]+sp[1], v[2]+sp[2],
     #          v[0], v[1], v[2],
     #          length=np.linalg.norm(v),
     #          color=c, linewidth=3)
     ax.quiver(v[0], v[1], v[2],
               sp[0], sp[1], sp[2],
-              #length=np.linalg.norm(sp),
+              # length=np.linalg.norm(sp),
               np.linalg.norm(sp),
               color=c, linewidth=3)
     # print("ベクトル sp の大きさ", np.linalg.norm(sp))
@@ -109,7 +109,7 @@ def plotWheel(data):
         # plt.cla()                      # 現在描写されているグラフを消去．使用してもアニメーション描画できなかったので削除した
         wheelData = DotDot_Itr[angle]
         for x, y, z in wheelData:
-            ax.scatter(x, y, z, color = 'r', marker = 's')
+            ax.scatter(x, y, z, color='r', marker='s')
 
 # 右手座標系の回転処理関数（回転角，回転中心ベクトル）
 # 回転角はdegree（0〜360°）を入力する．
@@ -118,10 +118,16 @@ def rtnArb_Rot(Promega, n):
     n_y = n[1]
     n_z = n[2]
     t = Promega*np.pi/180
-    Rot_Rod = np.array([[np.cos(t) + n_x**2*(1-np.cos(t))     , n_x*n_y*(1-np.cos(t)) - n_z*np.sin(t), n_x*n_z*(1-np.cos(t)) + n_y*np.sin(t)],
-                        [n_y*n_x*(1-np.cos(t)) + n_z*np.sin(t), np.cos(t) + n_y**2*(1-np.cos(t))     , n_y*n_z*(1-np.cos(t)) - n_x*np.sin(t)],
-                        [n_z*n_x*(1-np.cos(t)) - n_y*np.sin(t), n_z*n_y*(1-np.cos(t)) + n_x*np.sin(t), np.cos(t) + n_z**2*(1-np.cos(t))     ]])
-    #print("Rot_Rod = ", Rot_Rod)
+    Rot_Rod = np.array([[np.cos(t) + n_x**2*(1-np.cos(t)),
+                         n_x*n_y*(1-np.cos(t)) - n_z*np.sin(t),
+                         n_x*n_z*(1-np.cos(t)) + n_y*np.sin(t)],
+                        [n_y*n_x*(1-np.cos(t)) + n_z*np.sin(t),
+                         np.cos(t) + n_y**2*(1-np.cos(t)),
+                         n_y*n_z*(1-np.cos(t)) - n_x*np.sin(t)],
+                        [n_z*n_x*(1-np.cos(t)) - n_y*np.sin(t),
+                         n_z*n_y*(1-np.cos(t)) + n_x*np.sin(t),
+                         np.cos(t) + n_z**2*(1-np.cos(t))]])
+    # print("Rot_Rod = ", Rot_Rod)
     return Rot_Rod
 
 
@@ -161,7 +167,7 @@ input_n = RotateCenter / norm_n
 # print("input_n = ", input_n)
 
 # 設定した回転角と回転中心に応じた回転行列を導出
-R = rtnArb_Rot(DELTAOMEGA, input_n) 
+R = rtnArb_Rot(DELTAOMEGA, input_n)
 
 # ##################################################################
 # 初期位置の車輪を設定，描画
@@ -181,7 +187,7 @@ WheelInit = [DIAMETER * np.cos(omega), np.zeros(ELEMENTS), DIAMETER * np.sin(ome
 # print("type of Wheel_O", type(Wheel_O))
 # print("WheelInit = ", WheelInit)
 
-#for omega in range(0, 360):
+# for omega in range(0, 360):
 #    DotDot_Tmp = np.array([DIAMETER * np.cos(omega*np.pi/180), 0, DIAMETER * np.sin(omega*np.pi/180)] + Front_O)
 #    plotDot(DotDot_Tmp, 'y')
 #    DotDot_F = np.append(DotDot_F, [DotDot_Tmp], axis = 0)
@@ -196,14 +202,14 @@ WheelInit = [DIAMETER * np.cos(omega), np.zeros(ELEMENTS), DIAMETER * np.sin(ome
 # ##################################################################
 
 #　バンク後の車輪データ（バンク中の暫定車輪データ）の定義
-DotDot_Tmp = np.empty((0,3), int)
+DotDot_Tmp = np.empty((0, 3), int)
 DotDot_Itr = np.empty((0, 360, 3), int)
 
 # 接地点の初期化
 # 前輪描画データ：PtGnd_F
 # 後輪描画データ：PtGnd_R
-PtGnd_F = np.empty((0,3), int)
-PtGnd_R = np.empty((0,3), int)
+PtGnd_F = np.empty((0, 3), int)
+PtGnd_R = np.empty((0, 3), int)
 
 # 描画データの初期化（前輪）車輪の360°回転分のデータ（x，y，z軸）要素数＝3600個
 xfG = []
@@ -228,8 +234,8 @@ print("input_n", input_n)
 # 後輪データ： PtGnd_R
 # leanAngle: 傾き角（リーン角）→0°〜360°まで傾ける
 # range：　反復回数を示す．1回当たりの変化量が0.1なので，反復回数＝3600で傾き角＝360°となる．
-for omega in range(0, 3600):    #1回の遷移は0.01°．ハンドルを360°回転させる．range()の引数に指定できるのは整数intのみ．
-    
+for omega in range(0, 3600):    # 1回の遷移は0.01°．ハンドルを360°回転させる．range()の引数に指定できるのは整数intのみ
+
     # 設定した回転角と回転中心に応じた回転行列を導出
     R = rtnArb_Rot(omega/10, input_n)
 
@@ -241,22 +247,22 @@ for omega in range(0, 3600):    #1回の遷移は0.01°．ハンドルを360°�
     DotDot_Tmp = np.dot(R, WheelInit)
     row, col = DotDot_Tmp.shape
 
-    min_index = np.argmin(DotDot_Tmp[2,:])
+    min_index = np.argmin(DotDot_Tmp[2, :])
     # print("min_index = ", min_index)
     # print("minimum of DotDot_Tmp = ", np.min(DotDot_Tmp[2,:]))
 
-    xfG.append(DotDot_Tmp[0,min_index])
-    yfG.append(DotDot_Tmp[1,min_index])
-    zfG.append(DotDot_Tmp[2,min_index])
+    xfG.append(DotDot_Tmp[0, min_index])
+    yfG.append(DotDot_Tmp[1, min_index])
+    zfG.append(DotDot_Tmp[2, min_index])
 
     if omega <= STEERING_LIMIT*10:
-        xfGC.append(DotDot_Tmp[0,min_index])
-        yfGC.append(DotDot_Tmp[1,min_index])
-        zfGC.append(DotDot_Tmp[2,min_index])
+        xfGC.append(DotDot_Tmp[0, min_index])
+        yfGC.append(DotDot_Tmp[1, min_index])
+        zfGC.append(DotDot_Tmp[2, min_index])
     elif 3600 - STEERING_LIMIT*10 <= omega <= 3600:
-        xfGD.append(DotDot_Tmp[0,min_index])
-        yfGD.append(DotDot_Tmp[1,min_index])
-        zfGD.append(DotDot_Tmp[2,min_index])
+        xfGD.append(DotDot_Tmp[0, min_index])
+        yfGD.append(DotDot_Tmp[1, min_index])
+        zfGD.append(DotDot_Tmp[2, min_index])
 
 ##########################################################
 # 2次元グラフ表示処理
@@ -269,10 +275,10 @@ dAx.set_ylim(-(2*DIAMETER+2), 2*DIAMETER+1)
 dAx.spines['right'].set_color('none')
 dAx.spines['top'].set_color('none')
 dAx.xaxis.set_ticks_position('bottom')
-dAx.spines['bottom'].set_position(('data',0))
-#plt.xticks([-40, -20, 0, 10*np.pi/2, 20*np.pi], [r'$40$', r'$20$', r'$0$', r'$+\np.pi/2$', r'$+2\np.pi$'])
+dAx.spines['bottom'].set_position(('data', 0))
+# plt.xticks([-40, -20, 0, 10*np.pi/2, 20*np.pi], [r'$40$', r'$20$', r'$0$', r'$+\np.pi/2$', r'$+2\np.pi$'])
 dAx.yaxis.set_ticks_position('left')
-dAx.spines['left'].set_position(('data',0))
+dAx.spines['left'].set_position(('data', 0))
 dAx.set_xlabel("Turning Direction", horizontalalignment='right', x=1.0)
 dAx.set_ylabel("Traveling  Direction", horizontalalignment='right', y=1.0)
 # グラフのグリッドを正方形にする
@@ -282,32 +288,32 @@ dAx.set_aspect('equal')
 t = CompositeGenericTransform(Affine2D.identity().rotate_deg(90), dAx.transData)
 # 回転しない（0°回転）
 # t = CompositeGenericTransform(Affine2D.identity().rotate_deg(0), dAx.transData)
-dAx.plot(xfG, yfG, color="red",linestyle="-", transform=t)
-dAx.plot(xfGC, yfGC, color="red",linestyle="solid", linewidth = 3, transform=t)
-dAx.plot(xfGD, yfGD, color="red",linestyle="solid", linewidth = 3, transform=t)
+dAx.plot(xfG, yfG, color="red", linestyle="-", transform=t)
+dAx.plot(xfGC, yfGC, color="red", linestyle="solid", linewidth=3, transform=t)
+dAx.plot(xfGD, yfGD, color="red", linestyle="solid", linewidth=3, transform=t)
 
 dAx.text(DIAMETER, DIAMETER, r'Chaster angle = {0} degree,  Diameter = {1} '.format(THETA, DIAMETER))
 dAx.text(DIAMETER, DIAMETER - 2, r'Offset between center of the wheel and caster = {0} '.format(OFFSET))
 dAx.text(DIAMETER, DIAMETER - 4, r'Steering angle is {0} degree.'.format(STEERING_LIMIT))
-dAx.text(DIAMETER, DIAMETER - 6, r'Thick red line shows a trajectory which touches a ground from -{0} degree to {1} degree in steering angle'.format(STEERING_LIMIT, STEERING_LIMIT), color = 'red')
+dAx.text(DIAMETER, DIAMETER - 6, r'Thick red line shows a trajectory which touches a ground from -{0} degree to {1} degree in steering angle'.format(STEERING_LIMIT, STEERING_LIMIT), color='red')
 
 # ##################################################################
-# 3次元プロット表示処理    
+# 3次元プロット表示処理
 # ##################################################################
 # プロット
 fig = plt.figure()
 # ax = fig.add_subplot(111, projection='3d')
 ax = fig.gca(projection='3d')
 ax.set_aspect('auto')
-sct, = ax.plot([], [], [], "o", markersize = 3)
+sct, = ax.plot([], [], [], "o", markersize=3)
 
 # 描画を最大化し，グラフ範囲を正方形にしたい時はset_aspect('equal', 'datalim')にすると良い．
 # ax.set_aspect('equal', 'datalim')
 
 # タイヤのサイズを小さくして形状をリアル（真円）にしたい場合は下記のコードを憂苦にすると良い．
-ax.tick_params(axis = 'x', length = 40.0)
-ax.tick_params(axis = 'y', length = 40.0)
-ax.tick_params(axis = 'z', length = 20.0)
+ax.tick_params(axis='x', length=40.0)
+ax.tick_params(axis='y', length=40.0)
+ax.tick_params(axis='z', length=20.0)
 ax.set_xlim(-2 * DIAMETER, 2 * DIAMETER)
 ax.set_ylim(-2 * DIAMETER, 2 * DIAMETER)
 ax.set_zlim(0, 4 * DIAMETER)
@@ -321,7 +327,7 @@ ax.set_aspect('auto')
 # ##################################################################
 # 描画データの定義，描画処理
 # ##################################################################
-im = [] # フレーム更新の際に前回のプロットを削除するために用意
+im = []  # フレーム更新の際に前回のプロットを削除するために用意
 # imgif = [] # フレーム更新の際に前回のプロットを削除するために用意．gifアニメ用
 
 # ##################################################################
@@ -330,17 +336,17 @@ im = [] # フレーム更新の際に前回のプロットを削除するため�
 # arrow(Point1, Point2, 'k')
 # line= art3d.Line3D(Point1[0], Point1[1], Point1[2], Point2[0], Point2[1], Point2[2], color="k")
 Point3 = [-1*(Point1[0]+DIAMETER * 1.2), Point1[1], Point1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
-ax.plot([Point1[0], Point3[0]],[Point1[1], Point3[1]], [Point1[2], Point3[2]], color = "k")
+ax.plot([Point1[0], Point3[0]], [Point1[1], Point3[1]], [Point1[2], Point3[2]], color="k")
 # ax.add_line(line)
 
 # ##################################################################
 # 車輪の表示
 # ##################################################################
 # 車輪中心
-ax.plot( [0], [0], [DIAMETER],marker="o",linestyle='None')
+ax.plot([0], [0], [DIAMETER], marker="o", linestyle='None')
 # 車輪
 # Draw a circle on the y=0
-q=Circle((0, DIAMETER), DIAMETER,color='red', fill=False)
+q = Circle((0, DIAMETER), DIAMETER, color='red', fill=False)
 ax.add_patch(q)
 art3d.pathpatch_2d_to_3d(q, z=0, zdir="y")
 
@@ -350,7 +356,7 @@ art3d.pathpatch_2d_to_3d(q, z=0, zdir="y")
 # 車輪データのテスト描画
 # 周回後の最終位置にある車輪を描画する．
 # 色は自動的に指定される．
-ax.scatter( xfG, yfG, zfG, s = 40, alpha = 0.3, marker = ".")
+ax.scatter(xfG, yfG, zfG, s=40, alpha=0.3, marker=".")
 
 # 描画データ属性の設定
 def update(ifrm, xa, ya, za, xb, yb, zb):
@@ -369,22 +375,22 @@ def _update_plot(i, fig, im, xa, ya, za):
     # print('i = ', i)
     # print('xa[i] = ', xa[i])
     # 複数の点を描画する際は，x，y，zを配列表記にしてscatter関数の引数にする．
-    # im.append(ax.scatter( [xa[i], xb[i]], [ya[i], yb[i]], [za[i], zb[i]], s = 20, alpha = 0.3, color = 'c', marker = 'o'))
-    im.append(ax.scatter(xa[i], ya[i], za[i], s = 20, alpha = 0.3, color = 'c', marker = 'o'))
+    # im.append(ax.scatter([xa[i], xb[i]], [ya[i], yb[i]], [za[i], zb[i]], s=20, alpha=0.3, color='c', marker='o'))
+    im.append(ax.scatter(xa[i], ya[i], za[i], s=20, alpha=0.3, color='c', marker='o'))
     print('*')
-    # im.append(ax.scatter( xa[i], ya[i], za[i], s = 20, alpha = 0.3, color = 'c', marker = 'o'))
+    # im.append(ax.scatter(xa[i], ya[i], za[i], s=20, alpha=0.3, color='c', marker='o'))
 
 # ##################################################################
 # 描画データファイルの保存，描画処理
 # ##################################################################
 d = datetime.datetime.today()
-FFig.savefig("Trail_"+d.strftime("%B%d日%A")+"Caster="+str(THETA)+"_Wheel＝"+str(DIAMETER)+"_Offset="+str(OFFSET)+".png", dpi=100,transparent = False)
+FFig.savefig("Trail_"+d.strftime("%B%d日%A")+"Caster="+str(THETA)+"_Wheel＝"+str(DIAMETER)+"_Offset="+str(OFFSET)+".png", dpi=100, transparent=False)
 plt.show()
 
 # アニメーション作成
 # アニメーション機能は削除する
 '''
-ani = animation.FuncAnimation(fig, _update_plot, frames = NFR, fargs=(fig, im, xfG, yfG, zfG), interval=1000/FPS)
+ani = animation.FuncAnimation(fig, _update_plot, frames=NFR, fargs=(fig, im, xfG, yfG, zfG), interval=1000/FPS)
 # aniFront = animation.FuncAnimation(fig, _update_plot, NFR, fargs=(fig, im, xfG, yfG, zfG, xrG, yrG, zrG), interval=1000/FPS)
 #aniRear  = animation.FuncAnimation(fig, _update_plot, NFR, fargs=(fig, im, xrG, yrG, zrG), interval=1000/FPS)
 
@@ -392,7 +398,7 @@ d = datetime.datetime.today()
 FFig.savefig("Trail"+d.strftime("%B%d日%A")+"Caster="+str(THETA)+"_Wheel＝"+str(DIAMETER)+"_Offset="+str(OFFSET)+".png", dpi=100,transparent = False)
 plt.show()
 '''
-'''　アニメーション機能は削除する  
+'''　アニメーション機能は削除する
 directory = '/Users/east/programming/Python/BicycleModeling/MovieGIF/'
 fn = 'plot_BicycleTrajectory'+ str(datetime.datetime.now())
 
