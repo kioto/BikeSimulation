@@ -89,7 +89,7 @@ def calcRotCentVector(param1, param2):
     return input_n
 
 
-def plotDot(pr_bb, pr_color):
+def plotDot(ax, pr_bb, pr_color):
     """点の描画処理（点，色）指定
     """
 
