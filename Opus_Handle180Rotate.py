@@ -43,7 +43,7 @@ DIAMETER = 20
 POINT_1 = np.array([0, 0, DIAMETER - OFFSET / math.cos(THETA_RAD)])
 POINT_2 = np.array([DIAMETER/math.tan(THETA_RAD) - OFFSET/math.sin(THETA_RAD),
                     0, 0])
-RotateCenter = POINT_2 - POINT_1
+ROTATE_CENTER = POINT_2 - POINT_1
 print("Point1 = ", POINT_1)
 print("Point2 = ", POINT_2)
 
@@ -182,9 +182,9 @@ def rotM(p):
 # 設定値の内部パラメータへの変換
 # ##################################################################
 # print('n = ', n)
-norm_n = np.linalg.norm(RotateCenter)
+norm_n = np.linalg.norm(ROTATE_CENTER)
 # print('norm of n = ', norm_n)
-input_n = RotateCenter / norm_n
+input_n = ROTATE_CENTER / norm_n
 # print("input_n = ", input_n)
 
 # 設定した回転角と回転中心に応じた回転行列を導出
