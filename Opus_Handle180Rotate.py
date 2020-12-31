@@ -114,7 +114,8 @@ def arrow(ax, v, sp, c):
     # print("ベクトル sp の大きさ", np.linalg.norm(sp))
 
 
-def plotWheel(ax, data):
+'''未使用のためコメントアウト
+def plotWheel(Ax, data):
     """車輪の描画
     """
     for angle in range(0, 360):
@@ -124,6 +125,7 @@ def plotWheel(ax, data):
         wheelData = DotDot_Itr[angle]
         for x, y, z in wheelData:
             ax.scatter(x, y, z, color='r', marker='s')
+'''
 
 
 def rtnArb_Rot(promega, n):
@@ -177,6 +179,26 @@ def rotM(p):
 
 
 # ##################################################################
+# クラス定義
+# ##################################################################
+class Wheel2D:
+    """2Dグラフ用のデータクラス
+    """
+    # 描画データの初期化（前輪）車輪の360°回転分のデータ（x，y，z軸）要素数＝3600個
+    xfG = []
+    yfG = []
+    zfG = []
+
+    # キャンバー角でのセルフステアによる軌跡
+    xfGC = []
+    yfGC = []
+    zfGC = []
+    xfGD = []
+    yfGD = []
+    zfGD = []
+
+
+# ##################################################################
 # 設定値の内部パラメータへの変換
 # ##################################################################
 """未使用のためコメントアウト
@@ -190,111 +212,103 @@ input_n = ROTATE_CENTER / norm_n
 R = rtnArb_Rot(DELTAOMEGA, input_n)
 """
 
+
 # ##################################################################
 # 初期位置の車輪を設定，描画
 # 1回目の開店後の前輪点群データを算出
 # ##################################################################
+def calc_front_wheel():
+    # プロットサイズの指定
+    # fig = plt.figure(figsize=(10,10),dpi=200)
 
-# プロットサイズの指定
-# fig = plt.figure(figsize=(10,10),dpi=200)
-
-# 車輪の描画（前輪）
-omega = np.linspace(0, 2*np.pi, ELEMENTS)
-# print("type of omega = ", type(omega))
-# print("shape of omega = ", np.shape(omega))
-# print("omega = ", omega)
-WheelInit = [DIAMETER * np.cos(omega),
-             np.zeros(ELEMENTS),
-             DIAMETER * np.sin(omega)] + WHEEL_O
-# print("type of WheelInit = ", type(WheelInit))
-# print("type of Wheel_O", type(WHEEL_O))
-# print("WheelInit = ", WheelInit)
-
-# for omega in range(0, 360):
-#    DotDot_Tmp = np.array([DIAMETER * np.cos(omega*np.pi/180),
-#                          0,
-#                          DIAMETER * np.sin(omega*np.pi/180)] + Front_O)
-#    plotDot(DotDot_Tmp, 'y')
-#    DotDot_F = np.append(DotDot_F, [DotDot_Tmp], axis = 0)
-# print("DotDot_F = ", DotDot_F)
-# print('len(DotDot_F) = ', len(DotDot_F))
-# print('type(DotDot_F) = ', type(DotDot_F)) = <class 'numpy.ndarray'>
-# print('DotDot_F.ndim = ', DotDot_F.ndim)
-# print('DotDot_F.shape = ', DotDot_F.shape)
-
-# ##################################################################
-# 回転処理
-# ##################################################################
-
-# バンク後の車輪データ（バンク中の暫定車輪データ）の定義
-DotDot_Tmp = np.empty((0, 3), int)
-DotDot_Itr = np.empty((0, 360, 3), int)
-
-# 接地点の初期化
-# 前輪描画データ：PtGnd_F
-# 後輪描画データ：PtGnd_R
-PtGnd_F = np.empty((0, 3), int)
-PtGnd_R = np.empty((0, 3), int)
-
-# 描画データの初期化（前輪）車輪の360°回転分のデータ（x，y，z軸）要素数＝3600個
-xfG = []
-yfG = []
-zfG = []
-
-# キャンバー角でのセルフステアによる軌跡
-xfGC = []
-yfGC = []
-zfGC = []
-xfGD = []
-yfGD = []
-zfGD = []
-
-# 回転中心ベクトルの設定
-input_n = calcRotCentVector(POINT_1, POINT_2)
-print("input_n", input_n)
-
-# ハンドル回転処理：　フロントフォークを中心に車輪を回転させる．
-# 0°から359°まで前輪，後輪を倒した時のそれぞれのデータ（前輪，後輪）の算出及び描画処理を
-# 実行する
-# 前輪データ： PtGnd_F
-# 後輪データ： PtGnd_R
-# leanAngle: 傾き角（リーン角）→0°〜360°まで傾ける
-# range：　反復回数を示す．1回当たりの変化量が0.1なので，反復回数＝3600で傾き角＝360°
-#         となる．
-
-# 1回の遷移は0.01°．ハンドルを360°回転させる．range()の引数に指定できるのは整数intのみ
-for omega in range(0, 3600):
-
-    # 設定した回転角と回転中心に応じた回転行列を導出
-    R = rtnArb_Rot(omega/10, input_n)
-
-    iCounter = 0
-
-    # ハンドル回転角度＝0°の初期車輪位置：　WheelInit
-    # WheelInitを回転行列Rを経てomega分だけ回転させた時の車輪はDotDot_Tmpになる．
+    # 車輪の描画（前輪）
+    omega = np.linspace(0, 2*np.pi, ELEMENTS)
+    # print("type of omega = ", type(omega))
+    # print("shape of omega = ", np.shape(omega))
+    # print("omega = ", omega)
+    WheelInit = [DIAMETER * np.cos(omega),
+                 np.zeros(ELEMENTS),
+                 DIAMETER * np.sin(omega)] + WHEEL_O
+    # print("type of WheelInit = ", type(WheelInit))
+    # print("type of Wheel_O", type(WHEEL_O))
     # print("WheelInit = ", WheelInit)
-    DotDot_Tmp = np.dot(R, WheelInit)
-    row, col = DotDot_Tmp.shape
 
-    min_index = np.argmin(DotDot_Tmp[2, :])
-    # print("min_index = ", min_index)
-    # print("minimum of DotDot_Tmp = ", np.min(DotDot_Tmp[2,:]))
+    # for omega in range(0, 360):
+    #    DotDot_Tmp = np.array([DIAMETER * np.cos(omega*np.pi/180),
+    #                          0,
+    #                          DIAMETER * np.sin(omega*np.pi/180)] + Front_O)
+    #    plotDot(DotDot_Tmp, 'y')
+    #    DotDot_F = np.append(DotDot_F, [DotDot_Tmp], axis = 0)
+    # print("DotDot_F = ", DotDot_F)
+    # print('len(DotDot_F) = ', len(DotDot_F))
+    # print('type(DotDot_F) = ', type(DotDot_F)) = <class 'numpy.ndarray'>
+    # print('DotDot_F.ndim = ', DotDot_F.ndim)
+    # print('DotDot_F.shape = ', DotDot_F.shape)
 
-    xfG.append(DotDot_Tmp[0, min_index])
-    yfG.append(DotDot_Tmp[1, min_index])
-    zfG.append(DotDot_Tmp[2, min_index])
+    # ##################################################################
+    # 回転処理
+    # ##################################################################
 
-    if omega <= STEERING_LIMIT*10:
-        xfGC.append(DotDot_Tmp[0, min_index])
-        yfGC.append(DotDot_Tmp[1, min_index])
-        zfGC.append(DotDot_Tmp[2, min_index])
-    elif 3600 - STEERING_LIMIT*10 <= omega <= 3600:
-        xfGD.append(DotDot_Tmp[0, min_index])
-        yfGD.append(DotDot_Tmp[1, min_index])
-        zfGD.append(DotDot_Tmp[2, min_index])
+    # バンク後の車輪データ（バンク中の暫定車輪データ）の定義
+    DotDot_Tmp = np.empty((0, 3), int)
+    # DotDot_Itr = np.empty((0, 360, 3), int)
+
+    # 接地点の初期化
+    # 前輪描画データ：PtGnd_F
+    # 後輪描画データ：PtGnd_R
+    # PtGnd_F = np.empty((0, 3), int)
+    # PtGnd_R = np.empty((0, 3), int)
+
+    wd = Wheel2D()
+
+    # 回転中心ベクトルの設定
+    input_n = calcRotCentVector(POINT_1, POINT_2)
+    print("input_n", input_n)
+
+    # ハンドル回転処理：　フロントフォークを中心に車輪を回転させる．
+    # 0°から359°まで前輪，後輪を倒した時のそれぞれのデータ（前輪，後輪）の算出及び描画処理を
+    # 実行する
+    # 前輪データ： PtGnd_F
+    # 後輪データ： PtGnd_R
+    # leanAngle: 傾き角（リーン角）→0°〜360°まで傾ける
+    # range：　反復回数を示す．1回当たりの変化量が0.1なので，反復回数＝3600で傾き角＝360°
+    #         となる．
+
+    # 1回の遷移は0.01°．ハンドルを360°回転させる．range()の引数に指定できるのは整数intのみ
+    for omega in range(0, 3600):
+
+        # 設定した回転角と回転中心に応じた回転行列を導出
+        R = rtnArb_Rot(omega/10, input_n)
+
+        # iCounter = 0
+
+        # ハンドル回転角度＝0°の初期車輪位置：　WheelInit
+        # WheelInitを回転行列Rを経てomega分だけ回転させた時の車輪はDotDot_Tmpになる．
+        # print("WheelInit = ", WheelInit)
+        DotDot_Tmp = np.dot(R, WheelInit)
+        row, col = DotDot_Tmp.shape
+
+        min_index = np.argmin(DotDot_Tmp[2, :])
+        # print("min_index = ", min_index)
+        # print("minimum of DotDot_Tmp = ", np.min(DotDot_Tmp[2,:]))
+
+        wd.xfG.append(DotDot_Tmp[0, min_index])
+        wd.yfG.append(DotDot_Tmp[1, min_index])
+        wd.zfG.append(DotDot_Tmp[2, min_index])
+
+        if omega <= STEERING_LIMIT*10:
+            wd.xfGC.append(DotDot_Tmp[0, min_index])
+            wd.yfGC.append(DotDot_Tmp[1, min_index])
+            wd.zfGC.append(DotDot_Tmp[2, min_index])
+        elif 3600 - STEERING_LIMIT*10 <= omega <= 3600:
+            wd.xfGD.append(DotDot_Tmp[0, min_index])
+            wd.yfGD.append(DotDot_Tmp[1, min_index])
+            wd.zfGD.append(DotDot_Tmp[2, min_index])
+
+    return wd
 
 
-def draw_2d_graph():
+def draw_2d_graph(wd):
     '''2次元グラフ表示処理
     '''
     ffig = plt.figure(figsize=(DIAMETER/0.9, DIAMETER/1.6), dpi=80)
@@ -321,10 +335,10 @@ def draw_2d_graph():
     # 回転しない（0°回転）
     # t = CompositeGenericTransform(Affine2D.identity().rotate_deg(0),
     #                               dAx.transData)
-    dAx.plot(xfG, yfG, color="red", linestyle="-", transform=t)
-    dAx.plot(xfGC, yfGC, color="red", linestyle="solid", linewidth=3,
+    dAx.plot(wd.xfG, wd.yfG, color="red", linestyle="-", transform=t)
+    dAx.plot(wd.xfGC, wd.yfGC, color="red", linestyle="solid", linewidth=3,
              transform=t)
-    dAx.plot(xfGD, yfGD, color="red", linestyle="solid", linewidth=3,
+    dAx.plot(wd.xfGD, wd.yfGD, color="red", linestyle="solid", linewidth=3,
              transform=t)
 
     dAx.text(DIAMETER, DIAMETER,
@@ -347,7 +361,7 @@ def draw_2d_graph():
                  dpi=100, transparent=False)
 
 
-def draw_3d_graph():
+def draw_3d_graph(wd):
     """3次元プロット表示処理
     """
     # プロット
@@ -414,7 +428,7 @@ def draw_3d_graph():
     # 車輪データのテスト描画
     # 周回後の最終位置にある車輪を描画する．
     # 色は自動的に指定される．
-    ax.scatter(xfG, yfG, zfG, s=40, alpha=0.3, marker=".")
+    ax.scatter(wd.xfG, wd.yfG, wd.zfG, s=40, alpha=0.3, marker=".")
 
     def update(ifrm, xa, ya, za, xb, yb, zb):
         """描画データ属性の設定
@@ -479,6 +493,7 @@ ani.save(directory+fn+'.mp4', writer='ffmpeg', fps=FPS)
 '''
 
 if __name__ == '__main__':
-    draw_2d_graph()
-    draw_3d_graph()
+    wd = calc_front_wheel()
+    draw_2d_graph(wd)
+    draw_3d_graph(wd)
     plt.show()
