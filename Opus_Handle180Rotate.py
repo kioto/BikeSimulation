@@ -293,50 +293,61 @@ for omega in range(0, 3600):
         yfGD.append(DotDot_Tmp[1, min_index])
         zfGD.append(DotDot_Tmp[2, min_index])
 
-##########################################################
-# 2次元グラフ表示処理
-##########################################################
-FFig = plt.figure(figsize=(DIAMETER/0.9, DIAMETER/1.6), dpi=80)
-dAx = FFig.add_subplot(111)
-dAx.set_title("Trajectory of Turning Handle at 360 degrees")
-dAx.set_xlim(-(2*DIAMETER+2), 2*np.pi*10)
-dAx.set_ylim(-(2*DIAMETER+2), 2*DIAMETER+1)
-dAx.spines['right'].set_color('none')
-dAx.spines['top'].set_color('none')
-dAx.xaxis.set_ticks_position('bottom')
-dAx.spines['bottom'].set_position(('data', 0))
-# plt.xticks([-40, -20, 0, 10*np.pi/2, 20*np.pi],
-#            [r'$40$', r'$20$', r'$0$', r'$+\np.pi/2$', r'$+2\np.pi$'])
-dAx.yaxis.set_ticks_position('left')
-dAx.spines['left'].set_position(('data', 0))
-dAx.set_xlabel("Turning Direction", horizontalalignment='right', x=1.0)
-dAx.set_ylabel("Traveling  Direction", horizontalalignment='right', y=1.0)
-# グラフのグリッドを正方形にする
-dAx.set_aspect('equal')
 
-# 90度回転
-t = CompositeGenericTransform(Affine2D.identity().rotate_deg(90),
-                              dAx.transData)
-# 回転しない（0°回転）
-# t = CompositeGenericTransform(Affine2D.identity().rotate_deg(0),
-#                               dAx.transData)
-dAx.plot(xfG, yfG, color="red", linestyle="-", transform=t)
-dAx.plot(xfGC, yfGC, color="red", linestyle="solid", linewidth=3, transform=t)
-dAx.plot(xfGD, yfGD, color="red", linestyle="solid", linewidth=3, transform=t)
+def draw_2d_graph():
+    '''2次元グラフ表示処理
+    '''
+    ffig = plt.figure(figsize=(DIAMETER/0.9, DIAMETER/1.6), dpi=80)
+    dAx = ffig.add_subplot(111)
+    dAx.set_title("Trajectory of Turning Handle at 360 degrees")
+    dAx.set_xlim(-(2*DIAMETER+2), 2*np.pi*10)
+    dAx.set_ylim(-(2*DIAMETER+2), 2*DIAMETER+1)
+    dAx.spines['right'].set_color('none')
+    dAx.spines['top'].set_color('none')
+    dAx.xaxis.set_ticks_position('bottom')
+    dAx.spines['bottom'].set_position(('data', 0))
+    # plt.xticks([-40, -20, 0, 10*np.pi/2, 20*np.pi],
+    #            [r'$40$', r'$20$', r'$0$', r'$+\np.pi/2$', r'$+2\np.pi$'])
+    dAx.yaxis.set_ticks_position('left')
+    dAx.spines['left'].set_position(('data', 0))
+    dAx.set_xlabel("Turning Direction", horizontalalignment='right', x=1.0)
+    dAx.set_ylabel("Traveling  Direction", horizontalalignment='right', y=1.0)
+    # グラフのグリッドを正方形にする
+    dAx.set_aspect('equal')
 
-dAx.text(DIAMETER, DIAMETER,
-         r'Chaster angle = {0} degree,  Diameter = {1} '
-         .format(THETA, DIAMETER))
-dAx.text(DIAMETER, DIAMETER - 2,
-         r'Offset between center of the wheel and caster = {0} '
-         .format(OFFSET))
-dAx.text(DIAMETER, DIAMETER - 4,
-         r'Steering angle is {0} degree.'
-         .format(STEERING_LIMIT))
-dAx.text(DIAMETER, DIAMETER - 6,
-         r'Thick red line shows a trajectory which touches a ground '
-         'from -{0} degree to {1} degree in steering angle'
-         .format(STEERING_LIMIT, STEERING_LIMIT), color='red')
+    # 90度回転
+    t = CompositeGenericTransform(Affine2D.identity().rotate_deg(90),
+                                  dAx.transData)
+    # 回転しない（0°回転）
+    # t = CompositeGenericTransform(Affine2D.identity().rotate_deg(0),
+    #                               dAx.transData)
+    dAx.plot(xfG, yfG, color="red", linestyle="-", transform=t)
+    dAx.plot(xfGC, yfGC, color="red", linestyle="solid", linewidth=3,
+             transform=t)
+    dAx.plot(xfGD, yfGD, color="red", linestyle="solid", linewidth=3,
+             transform=t)
+
+    dAx.text(DIAMETER, DIAMETER,
+             r'Chaster angle = {0} degree,  Diameter = {1} '
+             .format(THETA, DIAMETER))
+    dAx.text(DIAMETER, DIAMETER - 2,
+             r'Offset between center of the wheel and caster = {0} '
+             .format(OFFSET))
+    dAx.text(DIAMETER, DIAMETER - 4,
+             r'Steering angle is {0} degree.'
+             .format(STEERING_LIMIT))
+    dAx.text(DIAMETER, DIAMETER - 6,
+             r'Thick red line shows a trajectory which touches a ground '
+             'from -{0} degree to {1} degree in steering angle'
+             .format(STEERING_LIMIT, STEERING_LIMIT), color='red')
+
+    d = datetime.datetime.today()
+    ffig.savefig("Trail_"+d.strftime("%B%d日%A")+"Caster="+str(THETA)
+                 + "_Wheel＝"+str(DIAMETER)+"_Offset="+str(OFFSET)+".png",
+                 dpi=100, transparent=False)
+
+
+draw_2d_graph()
 
 # ##################################################################
 # 3次元プロット表示処理
@@ -441,10 +452,6 @@ def _update_plot(i, fig, im, xa, ya, za):
 # ##################################################################
 # 描画データファイルの保存，描画処理
 # ##################################################################
-d = datetime.datetime.today()
-FFig.savefig("Trail_"+d.strftime("%B%d日%A")+"Caster="+str(THETA)
-             + "_Wheel＝"+str(DIAMETER)+"_Offset="+str(OFFSET)+".png",
-             dpi=100, transparent=False)
 plt.show()
 
 # アニメーション作成
