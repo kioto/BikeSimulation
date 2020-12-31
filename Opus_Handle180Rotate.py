@@ -89,12 +89,12 @@ def calcRotCentVector(param1, param2):
     return input_n
 
 
-def plotDot(PrBB, PrColor):
+def plotDot(pr_bb, pr_color):
     """点の描画処理（点，色）指定
     """
 
-    for x, y, z in [PrBB]:
-        ax.scatter(x, y, z, color=PrColor, marker='s')
+    for x, y, z in [pr_bb]:
+        ax.scatter(x, y, z, color=pr_color, marker='s')
 
 
 def arrow(v, sp, c):
@@ -128,7 +128,7 @@ def plotWheel(data):
             ax.scatter(x, y, z, color='r', marker='s')
 
 
-def rtnArb_Rot(Promega, n):
+def rtnArb_Rot(promega, n):
     """右手座標系の回転処理関数（回転角，回転中心ベクトル）
 
     回転角はdegree（0〜360°）を入力する．
@@ -136,8 +136,8 @@ def rtnArb_Rot(Promega, n):
     n_x = n[0]
     n_y = n[1]
     n_z = n[2]
-    t = Promega*np.pi/180
-    Rot_Rod = np.array([[np.cos(t) + n_x**2*(1-np.cos(t)),
+    t = promega*np.pi/180
+    rot_rod = np.array([[np.cos(t) + n_x**2*(1-np.cos(t)),
                          n_x*n_y*(1-np.cos(t)) - n_z*np.sin(t),
                          n_x*n_z*(1-np.cos(t)) + n_y*np.sin(t)],
                         [n_y*n_x*(1-np.cos(t)) + n_z*np.sin(t),
@@ -146,8 +146,8 @@ def rtnArb_Rot(Promega, n):
                         [n_z*n_x*(1-np.cos(t)) - n_y*np.sin(t),
                          n_z*n_y*(1-np.cos(t)) + n_x*np.sin(t),
                          np.cos(t) + n_z**2*(1-np.cos(t))]])
-    # print("Rot_Rod = ", Rot_Rod)
-    return Rot_Rod
+    # print("Rot_Rod = ", rot_rod)
+    return rot_rod
 
 
 def rotM(p):
@@ -164,18 +164,18 @@ def rotM(p):
     pz = p[2]
 
     # 物体座標系の 1->2->3 軸で回転させる
-    Rx = np.array([[1, 0, 0],
+    rx = np.array([[1, 0, 0],
                    [0, np.cos(px), np.sin(px)],
                    [0, -np.sin(px), np.cos(px)]])
-    Ry = np.array([[np.cos(py), 0, -np.sin(py)],
+    ry = np.array([[np.cos(py), 0, -np.sin(py)],
                    [0, 1, 0],
                    [np.sin(py), 0, np.cos(py)]])
-    Rz = np.array([[np.cos(pz), np.sin(pz), 0],
+    rz = np.array([[np.cos(pz), np.sin(pz), 0],
                    [-np.sin(pz), np.cos(pz), 0],
                    [0, 0, 1]])
-    R = Rz.dot(Ry).dot(Rx)
+    r = rz.dot(ry).dot(rx)
 
-    return R
+    return r
 
 
 # ##################################################################
