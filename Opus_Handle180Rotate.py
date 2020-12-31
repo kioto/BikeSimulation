@@ -226,19 +226,19 @@ def calc_front_wheel():
     # print("type of omega = ", type(omega))
     # print("shape of omega = ", np.shape(omega))
     # print("omega = ", omega)
-    WheelInit = [DIAMETER * np.cos(omega),
-                 np.zeros(ELEMENTS),
-                 DIAMETER * np.sin(omega)] + WHEEL_O
-    # print("type of WheelInit = ", type(WheelInit))
+    wheel_init = [DIAMETER * np.cos(omega),
+                  np.zeros(ELEMENTS),
+                  DIAMETER * np.sin(omega)] + WHEEL_O
+    # print("type of WheelInit = ", type(wheel_init))
     # print("type of Wheel_O", type(WHEEL_O))
-    # print("WheelInit = ", WheelInit)
+    # print("WheelInit = ", wheel_init)
 
     # for omega in range(0, 360):
-    #    DotDot_Tmp = np.array([DIAMETER * np.cos(omega*np.pi/180),
+    #    dotdot_tmp = np.array([DIAMETER * np.cos(omega*np.pi/180),
     #                          0,
     #                          DIAMETER * np.sin(omega*np.pi/180)] + Front_O)
-    #    plotDot(DotDot_Tmp, 'y')
-    #    DotDot_F = np.append(DotDot_F, [DotDot_Tmp], axis = 0)
+    #    plotDot(dotdot_tmp, 'y')
+    #    DotDot_F = np.append(DotDot_F, [dotdot_tmp], axis = 0)
     # print("DotDot_F = ", DotDot_F)
     # print('len(DotDot_F) = ', len(DotDot_F))
     # print('type(DotDot_F) = ', type(DotDot_F)) = <class 'numpy.ndarray'>
@@ -250,7 +250,7 @@ def calc_front_wheel():
     # ##################################################################
 
     # バンク後の車輪データ（バンク中の暫定車輪データ）の定義
-    DotDot_Tmp = np.empty((0, 3), int)
+    dotdot_tmp = np.empty((0, 3), int)
     # DotDot_Itr = np.empty((0, 360, 3), int)
 
     # 接地点の初期化
@@ -278,32 +278,32 @@ def calc_front_wheel():
     for omega in range(0, 3600):
 
         # 設定した回転角と回転中心に応じた回転行列を導出
-        R = rtnArb_Rot(omega/10, input_n)
+        r = rtnArb_Rot(omega/10, input_n)
 
         # iCounter = 0
 
-        # ハンドル回転角度＝0°の初期車輪位置：　WheelInit
-        # WheelInitを回転行列Rを経てomega分だけ回転させた時の車輪はDotDot_Tmpになる．
-        # print("WheelInit = ", WheelInit)
-        DotDot_Tmp = np.dot(R, WheelInit)
-        row, col = DotDot_Tmp.shape
+        # ハンドル回転角度＝0°の初期車輪位置：　wheel_init
+        # wheel_initを回転行列rを経てomega分だけ回転させた時の車輪はdotdot_tmpになる．
+        # print("WheelInit = ", wheel_init)
+        dotdot_tmp = np.dot(r, wheel_init)
+        row, col = dotdot_tmp.shape
 
-        min_index = np.argmin(DotDot_Tmp[2, :])
+        min_index = np.argmin(dotdot_tmp[2, :])
         # print("min_index = ", min_index)
-        # print("minimum of DotDot_Tmp = ", np.min(DotDot_Tmp[2,:]))
+        # print("minimum of dotdot_tmp = ", np.min(dotdot_tmp[2,:]))
 
-        wd.xfG.append(DotDot_Tmp[0, min_index])
-        wd.yfG.append(DotDot_Tmp[1, min_index])
-        wd.zfG.append(DotDot_Tmp[2, min_index])
+        wd.xfG.append(dotdot_tmp[0, min_index])
+        wd.yfG.append(dotdot_tmp[1, min_index])
+        wd.zfG.append(dotdot_tmp[2, min_index])
 
         if omega <= STEERING_LIMIT*10:
-            wd.xfGC.append(DotDot_Tmp[0, min_index])
-            wd.yfGC.append(DotDot_Tmp[1, min_index])
-            wd.zfGC.append(DotDot_Tmp[2, min_index])
+            wd.xfGC.append(dotdot_tmp[0, min_index])
+            wd.yfGC.append(dotdot_tmp[1, min_index])
+            wd.zfGC.append(dotdot_tmp[2, min_index])
         elif 3600 - STEERING_LIMIT*10 <= omega <= 3600:
-            wd.xfGD.append(DotDot_Tmp[0, min_index])
-            wd.yfGD.append(DotDot_Tmp[1, min_index])
-            wd.zfGD.append(DotDot_Tmp[2, min_index])
+            wd.xfGD.append(dotdot_tmp[0, min_index])
+            wd.yfGD.append(dotdot_tmp[1, min_index])
+            wd.zfGD.append(dotdot_tmp[2, min_index])
 
     return wd
 
