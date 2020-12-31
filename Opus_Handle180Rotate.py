@@ -97,7 +97,7 @@ def plotDot(ax, pr_bb, pr_color):
         ax.scatter(x, y, z, color=pr_color, marker='s')
 
 
-def arrow(v, sp, c):
+def arrow(ax, v, sp, c):
     """矢印の描画
 
     関数名(始点位置，ベクトル，色)
@@ -388,7 +388,7 @@ def draw_3d_graph():
     # ##################################################################
     # 回転軸の表示
     # ##################################################################
-    # arrow(Point1, Point2, 'k')
+    # arrow(ax, Point1, Point2, 'k')
     # line= art3d.Line3D(Point1[0], Point1[1], Point1[2],
     #                    Point2[0], Point2[1], Point2[2], color="k")
     Point3 = [-1*(Point1[0]+DIAMETER * 1.2),
