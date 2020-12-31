@@ -74,10 +74,8 @@ def calcRotCentVector(param1, param2):
     """
 
     # 回転中心ベクトルの算出
-    n = [param1[0] - param2[0], param1[1] - param2[1], param1[2] - param2[2]]
+    n = param1 - param2
     print("n = ", n)
-    nn = param1 - param2
-    print("nn = ", nn)
 
     # 回転中心ベクトルのノルムを導出
     norm_n = np.linalg.norm(n)
