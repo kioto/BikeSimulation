@@ -48,7 +48,7 @@ print("Point1 = ", POINT_1)
 print("Point2 = ", POINT_2)
 
 # 前輪中心の設定
-Wheel_O = np.array([np.zeros(ELEMENTS),
+WHEEL_O = np.array([np.zeros(ELEMENTS),
                     np.zeros(ELEMENTS),
                     DIAMETER*np.ones(ELEMENTS)])
 
@@ -205,9 +205,9 @@ omega = np.linspace(0, 2*np.pi, ELEMENTS)
 # print("omega = ", omega)
 WheelInit = [DIAMETER * np.cos(omega),
              np.zeros(ELEMENTS),
-             DIAMETER * np.sin(omega)] + Wheel_O
+             DIAMETER * np.sin(omega)] + WHEEL_O
 # print("type of WheelInit = ", type(WheelInit))
-# print("type of Wheel_O", type(Wheel_O))
+# print("type of Wheel_O", type(WHEEL_O))
 # print("WheelInit = ", WheelInit)
 
 # for omega in range(0, 360):
