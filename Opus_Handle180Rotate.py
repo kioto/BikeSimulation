@@ -347,9 +347,6 @@ def draw_2d_graph():
                  dpi=100, transparent=False)
 
 
-draw_2d_graph()
-
-
 def draw_3d_graph():
     """3次元プロット表示処理
     """
@@ -449,13 +446,9 @@ def draw_3d_graph():
         #                      s=20, alpha=0.3, color='c', marker='o'))
 
 
-draw_3d_graph()
-
-
 # ##################################################################
 # 描画データファイルの保存，描画処理
 # ##################################################################
-plt.show()
 
 # アニメーション作成
 # アニメーション機能は削除する
@@ -484,3 +477,8 @@ fn = 'plot_BicycleTrajectory'+ str(datetime.datetime.now())
 # ani.save(directory+fn+'.gif', writer='imagemagick')
 ani.save(directory+fn+'.mp4', writer='ffmpeg', fps=FPS)
 '''
+
+if __name__ == '__main__':
+    draw_2d_graph()
+    draw_3d_graph()
+    plt.show()
