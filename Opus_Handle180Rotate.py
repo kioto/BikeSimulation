@@ -403,12 +403,12 @@ def draw_3d_graph(wd):
     # arrow(ax, POINT_1, POINT_2, 'k')
     # line= art3d.Line3D(POINT_1[0], POINT_1[1], POINT_1[2],
     #                    POINT_2[0], POINT_2[1], POINT_2[2], color="k")
-    Point3 = [-1*(POINT_1[0]+DIAMETER * 1.2),
-              POINT_1[1],
-              POINT_1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
-    ax.plot([POINT_1[0], Point3[0]],
-            [POINT_1[1], Point3[1]],
-            [POINT_1[2], Point3[2]], color="k")
+    point_3 = [-1*(POINT_1[0]+DIAMETER * 1.2),
+               POINT_1[1],
+               POINT_1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
+    ax.plot([POINT_1[0], point_3[0]],
+            [POINT_1[1], point_3[1]],
+            [POINT_1[2], point_3[2]], color="k")
     # ax.add_line(line)
 
     # ##################################################################
