@@ -116,7 +116,7 @@ def arrow(ax, v, sp, c):
     # print("ベクトル sp の大きさ", np.linalg.norm(sp))
 
 
-def plotWheel(data):
+def plotWheel(ax, data):
     """車輪の描画
     """
     for angle in range(0, 360):
