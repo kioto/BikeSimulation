@@ -349,104 +349,106 @@ def draw_2d_graph():
 
 draw_2d_graph()
 
-# ##################################################################
-# 3次元プロット表示処理
-# ##################################################################
-# プロット
-fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-ax = fig.gca(projection='3d')
-ax.set_aspect('auto')
-sct, = ax.plot([], [], [], "o", markersize=3)
 
-# 描画を最大化し，グラフ範囲を正方形にしたい時はset_aspect('equal', 'datalim')
-# にすると良い．
-# ax.set_aspect('equal', 'datalim')
-
-# タイヤのサイズを小さくして形状をリアル（真円）にしたい場合は下記のコードを憂苦に
-# すると良い．
-ax.tick_params(axis='x', length=40.0)
-ax.tick_params(axis='y', length=40.0)
-ax.tick_params(axis='z', length=20.0)
-ax.set_xlim(-2 * DIAMETER, 2 * DIAMETER)
-ax.set_ylim(-2 * DIAMETER, 2 * DIAMETER)
-ax.set_zlim(0, 4 * DIAMETER)
-
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.set_zlabel("z")
-
-ax.set_aspect('auto')
-
-# ##################################################################
-# 描画データの定義，描画処理
-# ##################################################################
-im = []  # フレーム更新の際に前回のプロットを削除するために用意
-# imgif = [] # フレーム更新の際に前回のプロットを削除するために用意．gifアニメ用
-
-# ##################################################################
-# 回転軸の表示
-# ##################################################################
-# arrow(Point1, Point2, 'k')
-# line= art3d.Line3D(Point1[0], Point1[1], Point1[2],
-#                    Point2[0], Point2[1], Point2[2], color="k")
-Point3 = [-1*(Point1[0]+DIAMETER * 1.2),
-          Point1[1],
-          Point1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
-ax.plot([Point1[0], Point3[0]],
-        [Point1[1], Point3[1]],
-        [Point1[2], Point3[2]], color="k")
-# ax.add_line(line)
-
-# ##################################################################
-# 車輪の表示
-# ##################################################################
-# 車輪中心
-ax.plot([0], [0], [DIAMETER], marker="o", linestyle='None')
-# 車輪
-# Draw a circle on the y=0
-q = Circle((0, DIAMETER), DIAMETER, color='red', fill=False)
-ax.add_patch(q)
-art3d.pathpatch_2d_to_3d(q, z=0, zdir="y")
-
-# ##################################################################
-# 接地点の表示
-# ##################################################################
-# 車輪データのテスト描画
-# 周回後の最終位置にある車輪を描画する．
-# 色は自動的に指定される．
-ax.scatter(xfG, yfG, zfG, s=40, alpha=0.3, marker=".")
-
-
-def update(ifrm, xa, ya, za, xb, yb, zb):
-    """描画データ属性の設定
+def draw_3d_graph():
+    """3次元プロット表示処理
     """
-    sct.set_data(xa[ifrm], ya[ifrm])
-    sct.set_3d_properties(za[ifrm])
-    sct.set_data(xb[ifrm], yb[ifrm])
-    sct.set_3d_properties(zb[ifrm])
+    # プロット
+    fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+    ax = fig.gca(projection='3d')
+    ax.set_aspect('auto')
+    sct, = ax.plot([], [], [], "o", markersize=3)
+
+    # 描画を最大化し，グラフ範囲を正方形にしたい時はset_aspect('equal', 'datalim')
+    # にすると良い．
+    # ax.set_aspect('equal', 'datalim')
+
+    # タイヤのサイズを小さくして形状をリアル（真円）にしたい場合は下記のコードを憂苦に
+    # すると良い．
+    ax.tick_params(axis='x', length=40.0)
+    ax.tick_params(axis='y', length=40.0)
+    ax.tick_params(axis='z', length=20.0)
+    ax.set_xlim(-2 * DIAMETER, 2 * DIAMETER)
+    ax.set_ylim(-2 * DIAMETER, 2 * DIAMETER)
+    ax.set_zlim(0, 4 * DIAMETER)
+
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+
+    ax.set_aspect('auto')
+
+    # ##################################################################
+    # 描画データの定義，描画処理
+    # ##################################################################
+    im = []  # フレーム更新の際に前回のプロットを削除するために用意
+    # imgif = [] # フレーム更新の際に前回のプロットを削除するために用意．gifアニメ用
+
+    # ##################################################################
+    # 回転軸の表示
+    # ##################################################################
+    # arrow(Point1, Point2, 'k')
+    # line= art3d.Line3D(Point1[0], Point1[1], Point1[2],
+    #                    Point2[0], Point2[1], Point2[2], color="k")
+    Point3 = [-1*(Point1[0]+DIAMETER * 1.2),
+              Point1[1],
+              Point1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
+    ax.plot([Point1[0], Point3[0]],
+            [Point1[1], Point3[1]],
+            [Point1[2], Point3[2]], color="k")
+    # ax.add_line(line)
+
+    # ##################################################################
+    # 車輪の表示
+    # ##################################################################
+    # 車輪中心
+    ax.plot([0], [0], [DIAMETER], marker="o", linestyle='None')
+    # 車輪
+    # Draw a circle on the y=0
+    q = Circle((0, DIAMETER), DIAMETER, color='red', fill=False)
+    ax.add_patch(q)
+    art3d.pathpatch_2d_to_3d(q, z=0, zdir="y")
+
+    # ##################################################################
+    # 接地点の表示
+    # ##################################################################
+    # 車輪データのテスト描画
+    # 周回後の最終位置にある車輪を描画する．
+    # 色は自動的に指定される．
+    ax.scatter(xfG, yfG, zfG, s=40, alpha=0.3, marker=".")
+
+    def update(ifrm, xa, ya, za, xb, yb, zb):
+        """描画データ属性の設定
+        """
+        sct.set_data(xa[ifrm], ya[ifrm])
+        sct.set_3d_properties(za[ifrm])
+        sct.set_data(xb[ifrm], yb[ifrm])
+        sct.set_3d_properties(zb[ifrm])
+
+    def _update_plot(i, fig, im, xa, ya, za):
+        """更新する内容
+        """
+        # 前回のフレーム内容を一旦削除
+        if len(im) > 0:
+            im[0].remove()
+            im.pop()
+
+        # print('i = ', i)
+        # print('xa[i] = ', xa[i])
+        # 複数の点を描画する際は，x，y，zを配列表記にしてscatter関数の引数にする．
+        # im.append(ax.scatter([xa[i], xb[i]],
+        #                      [ya[i], yb[i]],
+        #                      [za[i], zb[i]],
+        #                      s=20, alpha=0.3, color='c', marker='o'))
+        im.append(ax.scatter(xa[i], ya[i], za[i],
+                             s=20, alpha=0.3, color='c', marker='o'))
+        print('*')
+        # im.append(ax.scatter(xa[i], ya[i], za[i],
+        #                      s=20, alpha=0.3, color='c', marker='o'))
 
 
-def _update_plot(i, fig, im, xa, ya, za):
-    """更新する内容
-    """
-    # 前回のフレーム内容を一旦削除
-    if len(im) > 0:
-        im[0].remove()
-        im.pop()
-
-    # print('i = ', i)
-    # print('xa[i] = ', xa[i])
-    # 複数の点を描画する際は，x，y，zを配列表記にしてscatter関数の引数にする．
-    # im.append(ax.scatter([xa[i], xb[i]],
-    #                      [ya[i], yb[i]],
-    #                      [za[i], zb[i]],
-    #                      s=20, alpha=0.3, color='c', marker='o'))
-    im.append(ax.scatter(xa[i], ya[i], za[i],
-                         s=20, alpha=0.3, color='c', marker='o'))
-    print('*')
-    # im.append(ax.scatter(xa[i], ya[i], za[i],
-    #                      s=20, alpha=0.3, color='c', marker='o'))
+draw_3d_graph()
 
 
 # ##################################################################
