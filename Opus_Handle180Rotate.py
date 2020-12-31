@@ -53,8 +53,8 @@ WHEEL_O = np.array([np.zeros(ELEMENTS),
                     DIAMETER*np.ones(ELEMENTS)])
 
 # 微小区間εの定義
-epsilon = sys.float_info.epsilon
-# print('epsilon = ', epsilon)
+EPSILON = sys.float_info.epsilon
+# print('epsilon = ', EPSILON)
 
 # ##################################################################
 # 回転元の点の指定
