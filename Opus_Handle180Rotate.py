@@ -40,12 +40,12 @@ DIAMETER = 20
 
 # 回転中心の定義
 # 回転中心は前輪と後輪の接地点で結ばれたベクトルとなる
-Point1 = np.array([0, 0, DIAMETER - OFFSET / math.cos(THETA_RAD)])
-Point2 = np.array([DIAMETER/math.tan(THETA_RAD) - OFFSET/math.sin(THETA_RAD),
-                   0, 0])
-RotateCenter = Point2 - Point1
-print("Point1 = ", Point1)
-print("Point2 = ", Point2)
+POINT_1 = np.array([0, 0, DIAMETER - OFFSET / math.cos(THETA_RAD)])
+POINT_2 = np.array([DIAMETER/math.tan(THETA_RAD) - OFFSET/math.sin(THETA_RAD),
+                    0, 0])
+RotateCenter = POINT_2 - POINT_1
+print("Point1 = ", POINT_1)
+print("Point2 = ", POINT_2)
 
 # 前輪中心の設定
 Wheel_O = np.array([np.zeros(ELEMENTS),
@@ -250,7 +250,7 @@ yfGD = []
 zfGD = []
 
 # 回転中心ベクトルの設定
-input_n = calcRotCentVector(Point1, Point2)
+input_n = calcRotCentVector(POINT_1, POINT_2)
 print("input_n", input_n)
 
 # ハンドル回転処理：　フロントフォークを中心に車輪を回転させる．
@@ -386,15 +386,15 @@ def draw_3d_graph():
     # ##################################################################
     # 回転軸の表示
     # ##################################################################
-    # arrow(ax, Point1, Point2, 'k')
-    # line= art3d.Line3D(Point1[0], Point1[1], Point1[2],
-    #                    Point2[0], Point2[1], Point2[2], color="k")
-    Point3 = [-1*(Point1[0]+DIAMETER * 1.2),
-              Point1[1],
-              Point1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
-    ax.plot([Point1[0], Point3[0]],
-            [Point1[1], Point3[1]],
-            [Point1[2], Point3[2]], color="k")
+    # arrow(ax, POINT_1, POINT_2, 'k')
+    # line= art3d.Line3D(POINT_1[0], POINT_1[1], POINT_1[2],
+    #                    POINT_2[0], POINT_2[1], POINT_2[2], color="k")
+    Point3 = [-1*(POINT_1[0]+DIAMETER * 1.2),
+              POINT_1[1],
+              POINT_1[2]+math.tan(THETA_RAD)*DIAMETER*1.2]
+    ax.plot([POINT_1[0], Point3[0]],
+            [POINT_1[1], Point3[1]],
+            [POINT_1[2], Point3[2]], color="k")
     # ax.add_line(line)
 
     # ##################################################################
